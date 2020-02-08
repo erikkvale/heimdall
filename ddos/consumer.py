@@ -26,7 +26,7 @@ ApacheLogRecord = namedtuple("ApacheLogRecord", [
 ])
 
 
-class ApacheParserException(Exception):
+class ApacheParserException(ValueError):
     """A custom Exception class for Apache log parsing anomalies"""
 
 
@@ -47,10 +47,13 @@ def parse_apache_log_record(record):
         record = record.decode("utf-8")
     matches = re.findall(REGEX_PATTERN, record)
     parsed_record = ["".join(match) for match in matches]
-    if len(parsed_record) < 9:
-        pass
-    else:
+    try:
+        if len(parsed_record) != 9:
+            raise ApacheParserException
         return ApacheLogRecord(*parsed_record)
+    except ApacheParserException:
+        print(f"Unexpected number of values when unpacking record iterable. Record: {parsed_record}")
+        raise
 
 
 if __name__ == "__main__":
