@@ -10,3 +10,52 @@ requirements, the consumer will be responsible for:
 
 The consumer hosts the brains of the DDOS monitoring app
 """
+import re
+from collections import namedtuple
+
+ApacheLogRecord = namedtuple("ApacheLogRecord", [
+    "ip_address",
+    "client_id",
+    "user_id",
+    "timestamp",
+    "request",
+    "response_status_code",
+    "response_size",
+    "referer_request_header",
+    "user_agent_request_header"
+])
+
+
+class ApacheParserException(Exception):
+    """A custom Exception class for Apache log parsing anomalies"""
+
+
+def parse_apache_log_record(record):
+    """
+    Parses an apache access log record and returns a namedtuple
+
+    Notes
+    =====
+    Assumes Apache's Combined Log Format for record:
+    LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-agent}i\"" combined
+
+    https://httpd.apache.org/docs/current/logs.html#combined
+    """
+    REGEX_PATTERN = r'\"(.*?)\"|\[(.*?)\]|(\S+)'
+
+    if isinstance(record, bytes):
+        record = record.decode("utf-8")
+    matches = re.findall(REGEX_PATTERN, record)
+    parsed_record = ["".join(match) for match in matches]
+    if len(parsed_record) < 9:
+        pass
+    else:
+        return ApacheLogRecord(*parsed_record)
+
+
+if __name__ == "__main__":
+    from kafka import KafkaConsumer
+    topic = "test"
+    consumer = KafkaConsumer("test", auto_offset_reset="earliest", bootstrap_servers=["localhost:9092"])
+    for msg in consumer:
+        print(parse_apache_log_record(msg.value))
