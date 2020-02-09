@@ -32,5 +32,5 @@ def apache_log_reader(file_path):
 if __name__ == "__main__":
     assert PRODUCER.bootstrap_connected()
     reader = apache_log_reader("../data/Project - Developer - apache-access-log (4).txt")
-    record_meta = publish_log_record("test", next(reader))
-    print(record_meta.get())
+    for line in reader:
+        publish_log_record("ddos", line)
