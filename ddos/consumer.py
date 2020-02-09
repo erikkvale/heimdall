@@ -58,7 +58,7 @@ def parse_apache_log_record(record):
 
 if __name__ == "__main__":
     from kafka import KafkaConsumer
-    topic = "test"
-    consumer = KafkaConsumer("test", auto_offset_reset="earliest", bootstrap_servers=["localhost:9092"])
+    topic = "ddos"
+    consumer = KafkaConsumer("ddos", auto_offset_reset="earliest", bootstrap_servers=["localhost:9092"])
     for msg in consumer:
         print(parse_apache_log_record(msg.value))
