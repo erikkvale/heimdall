@@ -10,7 +10,7 @@ Right now the producer is pretty dumb and the brains will be in the consumer
 """
 from kafka import KafkaProducer
 
-PRODUCER = KafkaProducer(bootstrap_servers=["localhost:9092"])
+PRODUCER = KafkaProducer(bootstrap_servers=["192.168.99.100:32770"])
 
 
 def publish_log_record(topic, message):
