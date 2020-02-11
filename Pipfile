@@ -10,6 +10,7 @@ pylint = "*"
 kafka-python = "*"
 pytest = "*"
 coverage = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.7"
