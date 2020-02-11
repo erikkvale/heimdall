@@ -9,8 +9,9 @@ requirements, the producer will be responsible for:
 Right now the producer is pretty dumb and the brains will be in the consumer
 """
 from kafka import KafkaProducer
+from config import settings
 
-PRODUCER = KafkaProducer(bootstrap_servers=["192.168.99.100:32770"])
+PRODUCER = KafkaProducer(bootstrap_servers=[settings.KAFKA_BOOTSTRAP_SERVER])
 
 
 def publish_log_record(topic, message):
@@ -31,6 +32,6 @@ def apache_log_reader(file_path):
 
 if __name__ == "__main__":
     assert PRODUCER.bootstrap_connected()
-    reader = apache_log_reader("../data/Project - Developer - apache-access-log (4).txt")
+    reader = apache_log_reader(settings.APACHE_ACCESS_LOG_FILE_PATH)
     for line in reader:
-        publish_log_record("ddos", line)
+        publish_log_record(settings.KAFKA_TOPIC, line)
