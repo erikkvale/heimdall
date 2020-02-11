@@ -56,6 +56,18 @@ All good!
 python -m pytest
 ```
 
+##### Run test coverage
+```
+# Run 
+coverage run --source=. -m pytest
+
+# Report stdout
+coverage report
+
+# Report HTML then open htmlcov/index.html in working dir
+coverage html
+```
+
 ##### Set ENV variables (see sample.env for concrete examples)
 ```
 KAFKA_BOOTSTRAP_SERVER=<kafka host IP><port>
@@ -78,3 +90,15 @@ python -m ddos.producer
 # Assuming pipenv venv activated
 python -m ddos.consumer
 ```
+
+# Next Steps and Improvements
+- Improving the detection algorithm and refactoring. Right now when the number of requests from a certain
+IP address reach a specified integer threshold, that IP is simply written to a file in the ddos package root directory called
+`suspect_ips.txt`. It's way too simple and clunky. Expanding to also check which URL endpoints are being hit and the
+timeframe would be obvious next steps. I want to get what I have in at this point, but I can improve and do more research on implementing
+an ML solution in the mean time.
+
+- Improving test coverage, this goes hand in hand with refactoring some of the main code, as it currently sits at 74% coverage
+
+- Would like to read up more on Kafka and the kafka-python library's various arguments and settings, in order
+to make this more robust and scale appropriately. Definitely need to improve my understanding.
