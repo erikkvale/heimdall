@@ -12,7 +12,6 @@ The consumer hosts the brains of the DDOS monitoring app
 """
 import re
 from collections import namedtuple
-from config import settings
 
 ApacheLogRecord = namedtuple("ApacheLogRecord", [
     "ip_address",
@@ -57,28 +56,30 @@ def parse_apache_log_record(record):
         raise
 
 
-def get_suspect_ips(counter_dict, request_threshold=30):
+def check_request_threshold(counter_dict, ip_address, request_threshold=30):
     """
     Returns a boolean if an ip address has met or exceeded the
     the threshold for occurrences
     """
-    suspect_ips = []
-    for ip, count in counter_dict.items():
-        if count >= request_threshold:
-            suspect_ips.append(ip)
-    return suspect_ips
+    count = counter_dict.get(ip_address)
+    if count >= request_threshold:
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":
     from kafka import KafkaConsumer
     from collections import Counter
+    from config import settings
 
-    topic = "ddos"
-    consumer = KafkaConsumer("ddos", auto_offset_reset="earliest", bootstrap_servers=[settings.KAFKA_BOOTSTRAP_SERVER])
+    consumer = KafkaConsumer(settings.KAFKA_TOPIC, auto_offset_reset="earliest", bootstrap_servers=[settings.KAFKA_BOOTSTRAP_SERVER])
     counter = Counter()
     for msg in consumer:
         apache_record = parse_apache_log_record(msg.value)
-        print(apache_record)
-        # counter[apache_record.ip_address] += 1
-        # if check_requests_threshold(counter, request_threshold=30):
-        #     print(counter[apache_record.ip_address])
+        counter[apache_record.ip_address] += 1
+        if check_request_threshold(counter, apache_record.ip_address, request_threshold=20):
+            with open("suspect_ips.txt", mode="a") as f:
+                f.write(apache_record.ip_address + "\n")
+                f.flush()
+
