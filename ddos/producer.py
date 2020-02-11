@@ -10,6 +10,7 @@ Right now the producer is pretty dumb and the brains will be in the consumer
 """
 from kafka import KafkaProducer
 
+
 def publish_log_record(producer, topic, message):
     """
     Uses KafkaProducer obj to publish/send a message
@@ -27,9 +28,7 @@ def apache_log_reader(file_path):
 
 
 if __name__ == "__main__":
-
     from config import settings
-
     PRODUCER = KafkaProducer(bootstrap_servers=[settings.KAFKA_BOOTSTRAP_SERVER])
     assert PRODUCER.bootstrap_connected()
     reader = apache_log_reader(settings.APACHE_ACCESS_LOG_FILE_PATH)
