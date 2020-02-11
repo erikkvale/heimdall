@@ -68,17 +68,20 @@ coverage report
 coverage html
 ```
 
-##### Set ENV variables (see sample.env for concrete examples)
-```
-KAFKA_BOOTSTRAP_SERVER=<kafka host IP><port>
-KAFKA_TOPIC=<topic name>
-APACHE_ACCESS_LOG_FILE_PATH=<abs file path>
-```
-
 ##### Start Zookeeper and Kafka
 ```
 docker-compose up
 ```
+
+##### Set ENV variables (see sample.env for concrete examples, `docker ps` for ip and port details)
+```
+KAFKA_BOOTSTRAP_SERVER=<kafka host IP><port>
+KAFKA_TOPIC=<topic name>
+
+# Expects a combined format Apache access log file path (See: https://httpd.apache.org/docs/current/logs.html#combined)
+APACHE_ACCESS_LOG_FILE_PATH=<abs file path>
+```
+
 
 ##### Run the package's relevant producer module to publish to Kafka
 ```
