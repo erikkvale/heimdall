@@ -14,8 +14,8 @@ from config import settings
 
 def publish_log_record(producer, topic, message):
     """
-    Uses the global KafkaProducer obj to publish the given
-    message to the specified topic
+    Uses KafkaProducer obj to publish/send a message
+    to the specified Kafka topic
     """
     bytes_message = str.encode(message)
     return producer.send(topic, bytes_message)
