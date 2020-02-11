@@ -12,6 +12,7 @@ The consumer hosts the brains of the DDOS monitoring app
 """
 import re
 from collections import namedtuple
+from config import settings
 
 ApacheLogRecord = namedtuple("ApacheLogRecord", [
     "ip_address",
@@ -56,9 +57,28 @@ def parse_apache_log_record(record):
         raise
 
 
+def get_suspect_ips(counter_dict, request_threshold=30):
+    """
+    Returns a boolean if an ip address has met or exceeded the
+    the threshold for occurrences
+    """
+    suspect_ips = []
+    for ip, count in counter_dict.items():
+        if count >= request_threshold:
+            suspect_ips.append(ip)
+    return suspect_ips
+
+
 if __name__ == "__main__":
     from kafka import KafkaConsumer
+    from collections import Counter
+
     topic = "ddos"
-    consumer = KafkaConsumer("ddos", auto_offset_reset="earliest", bootstrap_servers=["localhost:9092"])
+    consumer = KafkaConsumer("ddos", auto_offset_reset="earliest", bootstrap_servers=[settings.KAFKA_BOOTSTRAP_SERVER])
+    counter = Counter()
     for msg in consumer:
-        print(parse_apache_log_record(msg.value))
+        apache_record = parse_apache_log_record(msg.value)
+        print(apache_record)
+        # counter[apache_record.ip_address] += 1
+        # if check_requests_threshold(counter, request_threshold=30):
+        #     print(counter[apache_record.ip_address])
