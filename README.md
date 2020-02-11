@@ -40,6 +40,17 @@ git clone https://github.com/erikkvale/heimdall.git
 pipenv install
 ```
 
+##### Check python dependencies (see [detection-of-security-vulnerabilities](https://pipenv.kennethreitz.org/en/latest/advanced/#detection-of-security-vulnerabilities))
+```
+pipenv check
+
+# Expected Output:
+Checking PEP 508 requirements…
+Passed!
+Checking installed package safety…
+All good!
+```
+
 ##### Run unit tests
 ```
 python -m pytest
