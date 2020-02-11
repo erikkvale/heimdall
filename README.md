@@ -57,13 +57,13 @@ APACHE_ACCESS_LOG_FILE_PATH=<abs file path>
 docker-compose up
 ```
 
-##### Run the package's relevant producer.py script to publish to Kafka
+##### Run the package's relevant producer module to publish to Kafka
 ```
 # Assuming pipenv venv is activated
-python ddos/producer.py
+python -m ddos.producer
 ```
-##### Run the package's relevant consumer.py script to consume messages
+##### Run the package's relevant consumer module to consume messages
 ```
 # Assuming pipenv venv activated
-python ddos/consumer.py
+python -m ddos.consumer
 ```
