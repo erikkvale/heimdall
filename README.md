@@ -26,14 +26,38 @@ that the Kafka producer and consumer components use to connect to the broker, th
 the helpful wiki for more on the details of the Docker networking acrobatics for the image [here](https://github.com/wurstmeister/kafka-docker/wiki/Connectivity).
 and any image pre-reqs. Otherwise...
 
-- Set ENV variables in .env
+#### Pre-requisites
+- docker
+- docker-compose
+- pipenv (in absence of app docker container)
 
+- Clone the respository
+```
+git clone https://github.com/erikkvale/heimdall.git
+```
 
+- Install dependencies into local virtual env
+```
+pipenv install
+```
+
+- Run unit tests
+```
+python -m pytest
+```
+
+- Set ENV variables (see sample.env for concrete examples)
+```
+KAFKA_BOOTSTRAP_SERVER=<kafka host IP><port>
+KAFKA_TOPIC=<topic name>
+APACHE_ACCESS_LOG_FILE_PATH=<abs file path>
+```
 
 - Start Zookeeper and Kafka
 ```
 docker-compose up
 ```
 
-- Set 
+- Run the package's relevant producer.py script to publish to Kafka
+- Run the package's relevant consumer.py script to consume messages
 
