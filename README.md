@@ -35,7 +35,7 @@ __________________________________________________
 ```
 git clone https://github.com/erikkvale/heimdall.git
 ```
-##### Install dependencies into local virtual env
+##### Install dependencies into local virtual env (make sure you are in the repo directory)
 ```
 pipenv install
 ```
