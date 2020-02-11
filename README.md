@@ -30,34 +30,40 @@ and any image pre-reqs. Otherwise...
 - docker
 - docker-compose
 - pipenv (in absence of app docker container)
-
-- Clone the respository
+__________________________________________________
+##### Clone the respository
 ```
 git clone https://github.com/erikkvale/heimdall.git
 ```
-
-- Install dependencies into local virtual env
+##### Install dependencies into local virtual env
 ```
 pipenv install
 ```
 
-- Run unit tests
+##### Run unit tests
 ```
 python -m pytest
 ```
 
-- Set ENV variables (see sample.env for concrete examples)
+##### Set ENV variables (see sample.env for concrete examples)
 ```
 KAFKA_BOOTSTRAP_SERVER=<kafka host IP><port>
 KAFKA_TOPIC=<topic name>
 APACHE_ACCESS_LOG_FILE_PATH=<abs file path>
 ```
 
-- Start Zookeeper and Kafka
+##### Start Zookeeper and Kafka
 ```
 docker-compose up
 ```
 
-- Run the package's relevant producer.py script to publish to Kafka
-- Run the package's relevant consumer.py script to consume messages
-
+##### Run the package's relevant producer.py script to publish to Kafka
+```
+# Assuming pipenv venv is activated
+python ddos/producer.py
+```
+##### Run the package's relevant consumer.py script to consume messages
+```
+# Assuming pipenv venv activated
+python ddos/consumer.py
+```
